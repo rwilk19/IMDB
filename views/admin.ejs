@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+
+    <title>Welcome | Admin</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" type="text/css" href="style/admin.css" />
+   
+    <%-  include("partials/head.ejs")  %>
+    <%- include("partials/navbar.ejs") %>
+  </head>
+
+<body>
+  <!--id="container"-->
+  <div class="admin-page-container">
+      <h1><b>Welcome to your Administrator Page</b></h1>
+      <hr />
+      <br>
+
+    <div class = "admin-movie-search">
+
+    <!--Create/Add Movie Form-->
+    <form name="add-movie">
+      <h3>Create/Add a Movie to the database</h3>
+  
+      <div class="form-group">
+        <label for="">Name of Movie</label>
+        <input
+          type="text"
+          class="form-control"
+          name=""
+          id="movieName"
+          aria-describedby="helpId"
+          placeholder="Enter The Movie"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Enter the Movie to be created and added</small
+        >
+      </div>
+  
+      <div class="form-group">
+          <label for="">Director</label>
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id="director"
+            aria-describedby="helpId"
+            placeholder="Director"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Enter the Director of the movie</small
+          >
+        </div>
+  
+        <div class="form-group">
+          <label for="">Movie Genre</label>
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id="genre"
+            aria-describedby="helpId"
+            placeholder="Genre"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Enter the genre of the movie</small
+          >
+        </div>
+  
+        <div class="form-group">
+          <label for="">Year</label>
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id="year"
+            aria-describedby="helpId"
+            placeholder="Year"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Enter the year of the movie</small
+          >
+        </div>
+
+        <div id="board">
+            <select id="select1">
+              <option value="0">0 Movie Stars</option>
+              <option value="1" selected="selected"
+                >1 Movie Star</option
+              >
+              <option value="2">2 Movie Stars</option>
+              <option value="3">3 Movie Stars</option>
+            </select>
+            <br />
+    
+            <button
+              onClick="GetSelectedItem('select1');"
+              type="button"
+              id="clicky"
+            >
+              Get Selected Item
+            </button>
+          </div>
+  
+        <div class="form-group">
+          <label for="">Synopsis</label>
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id="synopsis"
+            aria-describedby="helpId"
+            placeholder="Synopsis"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Enter the Synopsis of the movie</small
+          >
+        </div>
+        <button type="button" class="btn btn-primary" onclick="{addMovie()}">
+            Create Movie
+        </button>
+    </form>
+    <br>
+
+     <!--Delete Movie Form-->
+    <form name="delete-movie">
+      <h3>Delete a movie</h3>
+
+      <div class="form-group">
+        <label for="">Movie ID</label>
+        <input
+          type="text"
+          class="form-control"
+          name=""
+          id="deleteMovieID"
+          aria-describedby="helpId"
+          placeholder="Enter the movieID to delete the movie"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Enter movieID to delete</small
+        >
+      </div>
+      <button type="button" class="btn btn-primary" onclick="{deleteMovie()}">
+        Delete Movie
+      </button>
+    </form>
+    <br>
+
+    <!--The "movie-list" id is where the deleted movie info goes-->
+    <ul class="list-group" id="delete-movie-list"></ul>
+
+    <br>
+  
+    <!--Retrieve Movie Form-->
+    <form name="retrieve-movie">
+      <h3>Search for a movie</h3>
+
+      <div class="form-group">
+        <label for="">Movie Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name=""
+          id="retrieveMovieName"
+          aria-describedby="helpId"
+          placeholder="Enter name of movie to retrieve"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Enter movie to retrieve</small
+        >
+      </div>
+      <button type="button" class="btn btn-primary" onclick="{retrieveMovie()}">
+        Retrieve Movie
+      </button>
+    </form>
+    <br>
+
+    <!--The "movie-list" id is where the retrieved movie info goes-->
+    <ul class="list-group" id="movie-list"></ul>
+    <!--Retrieve Review Form-->
+    <ul class="list-group" id="review-list"></ul>
+
+    <!--Update Movie Form-->
+    <form name="update-movie">
+        <h3>Update a Movie</h3>
+    
+        <div class="form-group">
+          <label for="">Movie ID</label>
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id="movieID"
+            aria-describedby="helpId"
+            placeholder="Enter The MovieID"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Enter the Movie to be added</small
+          >
+        </div>
+    
+        <div class="form-group">
+            <label for="">Field To Update</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              id="fieldToUpdate"
+              aria-describedby="helpId"
+              placeholder="field to update"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Enter the field to update (exactly): movieName, genre, director, year, synopsis</small
+            >
+          </div>
+    
+          <div class="form-group">
+            <label for="">Update value to:</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              id="updateString"
+              aria-describedby="helpId"
+              placeholder="new value"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Enter updated value</small
+            >
+          </div>
+
+          <button type="button" class="btn btn-primary" onclick="{updateMovie()}">
+              Update Movie
+          </button>
+  
+      </form>
+      <br>
+      <ul class="list-group" id="update-movie-list"></ul>
+      <br>
+      <br>
+
+    </div>
+
+
+    <div class = "admin-actor-search">
+
+        <!--Create/Add Actor Form-->
+        <form name="add-actor">
+          <h3>Create/Add an Actor to the database</h3>
+      
+          <div class="form-group">
+            <label for="">Name of Actor</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              id="actorName"
+              aria-describedby="helpId"
+              placeholder="Enter The Actor/Actress"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Enter the Actor to be added to the table</small
+            >
+          </div>
+      
+          <div id="board2">
+              <select id="selectOne">
+                <option value="4">0 Movies</option>
+                <option value="5" selected="selected">1 Movie</option>
+                <option value="6">2 Movies</option>
+                <option value="7">3 Movies</option>
+                <option value="8">4 Movies</option>
+                <option value="9">5 Movies</option>
+              </select>
+              <br />
+      
+              <button
+                onClick="GetSelectedItemForActor('selectOne');"
+                type="button"
+                id="clicky2"
+              >
+                Get Selected Item
+              </button>
+            </div>
+
+
+          <div class="form-group">
+              <label for="">Birthday</label>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id="birthday"
+                aria-describedby="helpId"
+                placeholder="Birthday"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Enter the birthday of the actor</small
+              >
+            </div>
+      
+            <div class="form-group">
+              <label for="">Biography</label>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id="bio"
+                aria-describedby="helpId"
+                placeholder="Biography"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Enter the bio of the actor</small
+              >
+            </div>
+    
+            <button type="button" class="btn btn-primary" onclick="{addActor()}">
+                Create Actor
+            </button>
+        </form>
+
+        <br>
+    
+         <!--Delete Actor Form-->
+        <form name="delete-actor">
+          <h3>Delete an Actor</h3>
+    
+          <div class="form-group">
+            <label for="">Actor ID</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              id="deleteActorID"
+              aria-describedby="helpId"
+              placeholder="Enter the actorID to delete the actor"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Enter actorID to delete</small
+            >
+          </div>
+          <button type="button" class="btn btn-primary" onclick="{deleteActor()}">
+            Delete Actor
+          </button>
+        </form>
+
+        <br>
+        <!--Where the deleted actor info goes-->
+    <ul class="list-group" id="delete-actor-list"></ul>
+    <br>
+      
+        <!--Retrieve Movie Form-->
+        <form name="retrieve-actor">
+          <h3>Search for an Actor/Actress</h3>
+    
+          <div class="form-group">
+            <label for="">Actor Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name=""
+              id="retrieveActorName"
+              aria-describedby="helpId"
+              placeholder="Enter name of actor to retrieve"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Enter actor to retrieve</small
+            >
+          </div>
+          <button type="button" class="btn btn-primary" onclick="{retrieveActor()}">
+            Retrieve Actor
+          </button>
+        </form>
+
+        <br>
+    
+        <!--The "actor-list" id is where the retrieved actor info goes-->
+        <ul class="list-group" id="actor-list"></ul>
+    
+        <!--Update Movie Form-->
+        <form name="update-actor">
+            <h3>Update an Actor</h3>
+        
+            <div class="form-group">
+              <label for="">Actor ID</label>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id="actorID"
+                aria-describedby="helpId"
+                placeholder="Enter The actorID"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Enter the Actor to be updated</small
+              >
+            </div>
+        
+            <div class="form-group">
+                <label for="">Field To Update</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="actorFieldToUpdate"
+                  aria-describedby="helpId"
+                  placeholder="field to update"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Enter the field to update (exactly): 'actorName', 'birthday', or 'bio' </small
+                >
+              </div>
+        
+              <div class="form-group">
+                <label for="">Update value to:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="actorUpdateString"
+                  aria-describedby="helpId"
+                  placeholder="new value"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Enter updated value</small
+                >
+              </div>
+    
+              <button type="button" class="btn btn-primary" onclick="{updateActor()}">
+                  Update Actor
+              </button>
+      
+          </form>
+
+          <br>
+          <br>
+
+
+            <!--Delete Review Form-->
+    <form name="delete-review">
+      <h3>Delete a Movie Review</h3>
+
+      <div class="form-group">
+        <label for="">Review ID</label>
+        <input
+          type="text"
+          class="form-control"
+          name=""
+          id="deleteReviewID"
+          aria-describedby="helpId"
+          placeholder="Enter the reviewID to delete the review"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Enter review ID to delete</small
+        >
+      </div>
+      <button type="button" class="btn btn-primary" onclick="{deleteReview()}">
+        Delete Review
+      </button>
+    </form>
+    <br>
+
+         <!--Where the deleted review info goes-->
+         <ul class="list-group" id="delete-user-review-list"></ul>
+         <br>
+  
+  </div>
+      
+
+
+  </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  
+  </body>
+
+  <script src="auth/firebaseAuth.js"></script>
+  <script src="js/movieFunctions.js"></script>
+  <script src="js/actorFunctions.js"></script>
+  <script src="js/reviewFunctions.js"></script>
+  
+
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDyB1waR_D_fRzUIgU732e_9rC7wmjpmYs",
+      authDomain: "imdb-60248.firebaseapp.com",
+      databaseURL: "https://imdb-60248.firebaseio.com",
+      projectId: "imdb-60248",
+      storageBucket: "imdb-60248.appspot.com",
+      messagingSenderId: "938392405133"
+    };
+    firebase.initializeApp(config);
+  </script>
+</html>

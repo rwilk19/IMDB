@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <title>Login</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <%- include('partials/head.ejs') %>
+  </head>
+  <body>
+
+    <div class="login-page-container">
+
+    <br />
+    <br />
+    <br />
+
+    <h2>Welcome to the IMDB Movie Application!</h2>
+
+
+    <br>
+    <!--Retrieve Movie Form-->
+    <div class = "user-movie-search">
+        <form name="retrieve-movie">
+            <h3>Search for a Movie and its reviews</h3>
+      
+            <div class="form-group">
+              <label for="">Movie Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id="retrieveMovieName"
+                aria-describedby="helpId"
+                placeholder="Enter name of movie to retrieve"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Enter a movie to discover info about it</small
+              >
+            </div>
+            <button type="button" class="btn btn-primary" style ="width: 200px;" onclick="{retrieveMovie()}">
+              Retrieve Movie
+            </button>
+          </form>
+
+      <!--The "movie-list" id is where the retrieved movie info goes-->
+          <div class="readMovieStyle"><ul class="list-group" id="movie-list"></ul></div>
+
+  <br>
+
+<!--The "review-list" id is where the retrieved review info goes-->
+<div class="readMovieStyle"><ul class="list-group" id="review-list"></ul></div>
+
+<br>
+
+<!--Retrieve Actor Form-->
+
+    <form name="retrieve-actor">
+        <h3>Search for an actor/actress</h3>
+  
+        <div class="form-group">
+          <label for="">Actor Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id="retrieveActorName"
+            aria-describedby="helpId"
+            placeholder="Enter name of actor/actress to retrieve"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Enter an actor to discover info about them</small
+          >
+        </div>
+        <button type="button" class="btn btn-primary" style ="width: 200px;" onclick="{retrieveActor()}">
+          Retrieve Actor
+        </button>
+      </form>
+
+  <!--The "actor-list" id is where the retrieved actor info goes-->
+      <div class="readMovieStyle"><ul class="list-group" id="actor-list"></ul></div>
+
+      <br>
+      <br>
+      <div class="readMovieStyle"><ul class="list-group" id="error-list"></ul></div>
+
+      <!--Create review Form-->
+<form name="add-review">
+  <h3>Write a Movie Review</h3>
+
+  <div class="form-group">
+    <label for="">Movie ID</label>
+    <input
+      type="text"
+      class="form-control"
+      name=""
+      id="reviewMovieId"
+      aria-describedby="helpId"
+      placeholder="Enter The MovieId"
+    />
+    <small id="helpId" class="form-text text-muted"
+      >Enter the Movie ID for the movie you're reviewing</small
+    >
+  </div>
+
+  <div class="form-group">
+      <label for="">Your Name</label>
+      <input
+        type="text"
+        class="form-control"
+        name=""
+        id="reviewerName"
+        aria-describedby="helpId"
+        placeholder="Your name"
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Enter your name</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="">Your City and State</label>
+      <input
+        type="text"
+        class="form-control"
+        name=""
+        id="residence"
+        aria-describedby="helpId"
+        placeholder="Your city and state"
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Enter your city and state</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label for=""># of Stars</label>
+      <input
+        type="text"
+        class="form-control"
+        name=""
+        id="reviewStars"
+        aria-describedby="helpId"
+        placeholder="On a scale of 1-5 how good was the film"
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Enter an integer from 1 to 5</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="">Review</label>
+      <input
+        type="text"
+        class="form-control"
+        name=""
+        id="reviewBody"
+        aria-describedby="helpId"
+        placeholder="Write your review here"
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Write a movie review</small
+      >
+    </div>
+
+
+    <button type="button" class="btn btn-primary" onclick="{createReview()}">
+        Submit Review
+    </button>
+</form>
+   
+<br>
+<br>
+  </div>
+
+
+  <div class="login-form">
+      <h3>Admin Sign In</h3>
+      <form>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control login"
+            style="width: 180px;"
+            name="password"
+            id="email"
+            aria-describedby="helpId"
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            class="form-control login"
+            style="width: 180px;"
+            name="password"
+            id="password"
+            aria-describedby="helpId"
+            placeholder="Password"
+          />
+
+      
+        </div>
+
+        <button
+        type="button"
+        name=""
+        id="signIn"
+        class="btn btn-primary btn-block"
+        onclick="login()"
+      >
+        Sign In
+      </button>
+
+      </form>
+
+
+      <br>
+      <br>
+
+  </div>
+
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.auth, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+  <script src="auth/firebaseAuth.js"></script>
+  <script src="js/movieFunctions.js"></script>
+  <script src="js/actorFunctions.js"></script>
+  <script src="js/reviewFunctions.js"></script>
+
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDyB1waR_D_fRzUIgU732e_9rC7wmjpmYs",
+      authDomain: "imdb-60248.firebaseapp.com",
+      databaseURL: "https://imdb-60248.firebaseio.com",
+      projectId: "imdb-60248",
+      storageBucket: "imdb-60248.appspot.com",
+      messagingSenderId: "938392405133"
+    };
+    firebase.initializeApp(config);
+  </script>
+</html>

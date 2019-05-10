@@ -1,0 +1,74 @@
+.nav-container {
+  height: 100px;
+  margin-bottom: 2%;
+}
+.navbar {
+  height: inherit;
+}
+.nav {
+  height: inherit;
+}
+.login-form {
+  margin: 0 auto;
+  width: 30%;
+  height: 200px;
+  margin-right: 100px;
+  
+}
+.form-control.login {
+  border: none;
+  border-bottom: solid 0.2em #b134ae;
+}
+
+
+.nav {
+  width: 100%;
+}
+.nav-item {
+  font-size: large;
+  margin-top: 3%;
+}
+.nav-item.sign-out {
+  margin-left: 68%;
+}
+.main-logo {
+  width: 50%;
+}
+
+.login-page-container {
+  width: 100%;
+  height: inherit;
+  margin-left:50px; 
+}
+
+.user-movie-search {
+  float:left;
+  width: 50%;
+}
+
+.readMovieStyle {
+  font: bold;
+  font-size: 16px;
+}
+
+.user-actor-search {
+  float:left;
+  width: 50%;
+}
+
+input[type = text], input[type = password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px, 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+

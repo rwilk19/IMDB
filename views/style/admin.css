@@ -1,0 +1,35 @@
+.admin-page-container {
+    width: 100%;
+    height: inherit;
+    margin-left:50px; 
+  }
+  
+  .user-movie-search {
+    float:left;
+    width: 50%;
+  }
+  .admin-movie-search {
+    float:left;
+    width: 45%;
+  }
+  .admin-actor-search {
+    width: 45%;
+    margin-left: 650px;
+  }
+  
+  .readMovieStyle {
+    font: bold;
+    font-size: 16px;
+  }
+  
+  .user-actor-search {
+    float:left;
+    width: 50%;
+  }
+
+  .admin-movie-search .form-group .form-control {
+    width:500px;
+  }
+  .admin-actor-search .form-group .form-control {
+    width:500px;
+  }
